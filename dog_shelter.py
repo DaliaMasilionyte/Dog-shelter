@@ -30,6 +30,10 @@ def delete_from_file(id):
                                     dogs_dict[dog_id]['name'] + '\n'
         output_file.write(new_shelter_list)
 
+def write_to_file(new_doggo):
+    with open('shelter.txt', 'a') as output_file:
+        output_file.write(new_doggo)
+
 
 
 @app.route('/')
@@ -60,10 +64,17 @@ def adoption():
 
     return adoption_protocol
 
-# @app.route('/giveaway_dogs')
-# def give_away():
+@app.route('/giveaway_dogs')
+def give_away_dogs():
+	current_ID = int(dog_id_list[-1])
+    new_ID = current_ID + 1
+    breed = request.args.get('breed')
+    name = request.args.get ('name')
 
-# 	return'That was very cruel! Shame on you.'
+    new_doggo = str(new_ID) + ' ' + breed + ' ' + name
+    
+    write_to_file('\n{}'.format(new_doggo))
+	return'That was very cruel! Shame on you.'
 
 if __name__ == "__main__":
 	dog_shelter.run(host="0.0.0.0", debug=True)
