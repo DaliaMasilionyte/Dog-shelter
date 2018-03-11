@@ -21,12 +21,12 @@ def hello():
 	return'Welcome to the puppy shelter'
 
 
-@app.route('/dogs_db/dogs', methods=['GET'])
+@app.route('/dogs', methods=['GET'])
 def get_all_dogs():
 	return jsonify({'Our Pupps':dogs_db})
 
 
-@app.route('/dogs_db/dogs/<dog_id>', methods=['DELETE'])
+@app.route('/dogs/<dog_id>', methods=['DELETE'])
 def adopt_dog(dog_id):
 	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id)]
 	if len(adopted_dog) == 0:
@@ -35,12 +35,12 @@ def adopt_dog(dog_id):
 	return jsonify({'Your adopted pup:':adopted_dog[0]})
 
 
-@app.route('/dogs_db/dogs', methods=['POST'])
-def give_away_dog():
+@app.route('/dogs/<give_away_dog_name>', methods=['POST'])
+def give_away_dog(give_away_dog_name):
 	new_dog = {
 	'id' : request.json['id'],
 	'breed' : request.json['breed'],
-	'name' : request.json['name']
+	'name' : give_away_dog_name
 	}
 	dogs_db.append(new_dog)
 	return jsonify({'That was very cruel':new_dog})
