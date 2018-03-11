@@ -47,5 +47,5 @@ def give_away_dog():
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(debug=True, host='0.0.0.0')
 
