@@ -12,7 +12,7 @@ docker-compose up -d
 
 Port 5000 is used.
 
-### Possible querys from terminal
+### Possible queries from terminal
 
 1) GET the list of dogs:
 
