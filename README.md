@@ -36,4 +36,4 @@ curl -i -H "Content-type: application/json" -X PUT -d "{\"temporary guardian"\":
 
 3) curl -i -X POST -H "Content-Type: application/json" -d '{ "id": "6", "breed": "Yorkshire Terriere"}' http://localhost:5000/dogs/"Lily"
 
-4) curl -i -H "Content-type: application/json" -X PUT -d "{\"temporary guardian"\":\"John Doe\"}" http://localhost:5000/dogs/1
+4) curl -i -H "Content-type: application/json" -X PUT -d "{\"temporary guardian\":\"John Doe\"}" http://localhost:5000/dogs/1
