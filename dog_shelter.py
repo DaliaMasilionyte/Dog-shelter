@@ -15,8 +15,6 @@ dogs_db = [
 	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian' : 'NONE'}
 ]
 
-current_id = len(dogs_db)
-
 @app.route('/')
 def hello():
 	return'Welcome to the puppy shelter'
@@ -39,11 +37,9 @@ def get_dog(parameter):
 
 
 # DELETE a dog from a database by ID (adopt)
-@app.route('/dogs/<parameter>', methods=['DELETE'])
-def adopt_dog(parameter):
-	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
-		dog['breed'] == parameter or dog['name'] == parameter or
-		dog['temporary guardian'] == parameter)]
+@app.route('/dogs/<dog_id>', methods=['DELETE'])
+def adopt_dog(dog_id):
+	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(adopted_dog) == 0:
 		abort(404)
 	dogs_db.remove(adopted_dog[0])
@@ -53,7 +49,7 @@ def adopt_dog(parameter):
 # Name is in url, id and breed have to be provided as JSON
 @app.route('/dogs', methods=['POST'])
 def give_away_dog():
-	current_id += 1
+	current_id = len(dogs_db) + 1
 	new_dog = {
 	'id' : current_id,
 	'breed' : request.json['breed'],
@@ -61,6 +57,7 @@ def give_away_dog():
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
+	
 
 	response = jsonify(new_dog)
 	response.status_code = 201
@@ -71,25 +68,22 @@ def give_away_dog():
 
 # @app.route('/dogs/<parameter>', methods=['POST'])
 # def add_to_dog():
-# 	changed_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
-# 		dog['breed'] == parameter || dog['name'] == parameter ||
+# 	owned_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
+# 		dog['breed'] == parameter or dog['name'] == parameter or
 # 		dog['temporary guardian'] == parameter)]
-	
-
+	# if len(owned_dog) == 0:
+	# 	abort(404)
+	# 
 # 	return jsonify({'dog':changed_dog})
 
 
 # PUT change a dog
 # Any parameter in URL
-@app.route('/dogs/<parameter>', methods = ['PUT'])
-def change_dog(parameter):
-	changed_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
-		dog['breed'] == parameter or dog['name'] == parameter or
-		dog['temporary guardian'] == parameter)]
+@app.route('/dogs/<dog_id>', methods = ['PUT'])
+def change_dog(dog_id):
+	changed_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(changed_dog) == 0:
 		abort(404)
-	if 'id' in request.json:
-		changed_dog[0]['id'] = request.json['id']
 	if 'name' in request.json:
 		changed_dog[0]['name'] = request.json['name']
 	if 'breed' in request.json:
