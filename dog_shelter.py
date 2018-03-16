@@ -15,7 +15,7 @@ dogs_db = [
 	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian' : 'NONE'}
 ]
 
-current_id = 5
+current_id = len(dogs_db)
 
 @app.route('/')
 def hello():
