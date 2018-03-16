@@ -49,7 +49,7 @@ def adopt_dog(dog_id):
 # Name is in url, id and breed have to be provided as JSON
 @app.route('/dogs', methods=['POST'])
 def give_away_dog():
-	current_id = len(dogs_db) + 1
+	current_id = int(dogs_db[len(dogs_db) - 1]['id']) + 1
 	new_dog = {
 	'id' : str(current_id),
 	'breed' : request.json['breed'],
