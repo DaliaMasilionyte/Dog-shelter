@@ -43,7 +43,7 @@ def adopt_dog(dog_id):
 	if len(adopted_dog) == 0:
 		abort(404)
 	dogs_db.remove(adopted_dog[0])
-	return jsonify(adopted_dog[0])
+	return 204
 
 # POST a dog to a database (give away)
 # Name is in url, id and breed have to be provided as JSON
