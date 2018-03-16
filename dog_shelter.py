@@ -15,6 +15,8 @@ dogs_db = [
 	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian' : 'NONE'}
 ]
 
+current_id = 5
+
 @app.route('/')
 def hello():
 	return'Welcome to the puppy shelter'
@@ -51,8 +53,9 @@ def adopt_dog(parameter):
 # Name is in url, id and breed have to be provided as JSON
 @app.route('/dogs', methods=['POST'])
 def give_away_dog():
+	current_id += 1
 	new_dog = {
-	'id' : request.json['id'],
+	'id' : current_id,
 	'breed' : request.json['breed'],
 	'temporary guardian' : request.json['temporary guardian'],
 	'name' : request.json['name']
