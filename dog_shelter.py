@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask import abort
 
 import os
 
@@ -58,7 +59,6 @@ def give_away_dog():
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
-
 
 	response = jsonify(new_dog)
     response.status_code = 201
