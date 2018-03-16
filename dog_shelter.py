@@ -36,7 +36,6 @@ def get_dog(parameter):
 
 
 
-
 # DELETE a dog from a database by ID (adopt)
 @app.route('/dogs/<parameter>', methods=['DELETE'])
 def adopt_dog(parameter):
@@ -91,7 +90,7 @@ def change_dog(parameter):
 	if 'name' in request.json:
 		changed_dog[0]['name'] = request.json['name']
 	if 'breed' in request.json:
-		changed_dog[0]['bred'] = request.json['breed']
+		changed_dog[0]['breed'] = request.json['breed']
 	if 'temporary guardian' in request.json:
 		changed_dog[0]['temporary guardian'] = request.json['temporary guardian']
 
