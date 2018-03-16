@@ -77,23 +77,25 @@ def give_away_dog():
 # 	return jsonify({'dog':changed_dog})
 
 
-# PUT (become) a dog guardian
-# ID in URL, guardian name - provided as JSON
+# PUT change a dog
+# Any parameter in URL
 @app.route('/dogs/<parameter>', methods = ['PUT'])
-def become_guardian(parameter):
-	guarded_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
+def change_dog(parameter):
+	changed_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
 		dog['breed'] == parameter or dog['name'] == parameter or
 		dog['temporary guardian'] == parameter)]
+	if len(guarded_dog) == 0:
+		abort(404)
 	if 'id' in request.json:
-		guarded_dog[0]['id'] = request.json['id']
+		changed_dog[0]['id'] = request.json['id']
 	if 'name' in request.json:
-		guarded_dog[0]['name'] = request.json['name']
+		changed_dog[0]['name'] = request.json['name']
 	if 'breed' in request.json:
-		guarded_dog[0]['bred'] = request.json['breed']
+		changed_dog[0]['bred'] = request.json['breed']
 	if 'temporary guardian' in request.json:
-		guarded_dog[0]['temporary guardian'] = request.json['temporary guardian']
+		changed_dog[0]['temporary guardian'] = request.json['temporary guardian']
 
-	return jsonify(guarded_dog[0])
+	return jsonify(changed_dog[0])
 
 
 if __name__ == "__main__":
