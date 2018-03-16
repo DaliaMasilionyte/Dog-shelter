@@ -84,7 +84,7 @@ def change_dog(parameter):
 	changed_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
 		dog['breed'] == parameter or dog['name'] == parameter or
 		dog['temporary guardian'] == parameter)]
-	if len(guarded_dog) == 0:
+	if len(changed_dog) == 0:
 		abort(404)
 	if 'id' in request.json:
 		changed_dog[0]['id'] = request.json['id']
