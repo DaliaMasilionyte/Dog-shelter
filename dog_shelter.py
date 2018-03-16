@@ -21,37 +21,72 @@ def hello():
 # GET information about all dogs from database as JSON
 @app.route('/dogs', methods=['GET'])
 def get_all_dogs():
-	return jsonify({'Our Pupps':dogs_db})
+	return jsonify({'dogs':dogs_db})
+
+# GET any dog by any parameter
+@app.route('/dogs/<parameter>', methods=['GET'])
+def get_dog(paramater):
+	my_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
+		dog['breed'] == parameter || dog['name'] == parameter ||
+		dog['temporary guardian'] == parameter)]
+	if len(adopted_dog) == 0:
+		abort(404)
+	return jsonify({'dog:':my_dog[0]})
+
+
+
 
 # DELETE a dog from a database by ID (adopt)
-@app.route('/dogs/<dog_id>', methods=['DELETE'])
-def adopt_dog(dog_id):
-	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id)]
+@app.route('/dogs/<parameter>', methods=['DELETE'])
+def adopt_dog(parameter):
+	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
+		dog['breed'] == parameter || dog['name'] == parameter ||
+		dog['temporary guardian'] == parameter)]
 	if len(adopted_dog) == 0:
 		abort(404)
 	dogs_db.remove(adopted_dog[0])
-	return jsonify({'Your adopted pup:':adopted_dog[0]})
+	return jsonify({'dog:':adopted_dog[0]})
 
 # POST a dog to a database (give away)
 # Name is in url, id and breed have to be provided as JSON
-@app.route('/dogs/<give_away_dog_name>', methods=['POST'])
-def give_away_dog(give_away_dog_name):
+@app.route('/dogs', methods=['POST'])
+def give_away_dog():
 	new_dog = {
 	'id' : request.json['id'],
 	'breed' : request.json['breed'],
-	'temporary guardian' : 'NONE',
-	'name' : give_away_dog_name
+	'temporary guardian' : request.json['temporary guardian'],
+	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
-	return jsonify({'That was very cruel':new_dog})
+	return jsonify({'dog':new_dog})
+
+# @app.route('/dogs/<parameter>', methods=['POST'])
+# def add_to_dog():
+# 	changed_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
+# 		dog['breed'] == parameter || dog['name'] == parameter ||
+# 		dog['temporary guardian'] == parameter)]
+	
+
+# 	return jsonify({'dog':changed_dog})
+
 
 # PUT (become) a dog guardian
 # ID in URL, guardian name - provided as JSON
-@app.route('/dogs/<dog_id>', methods = ['PUT'])
-def become_guardian(dog_id):
-	guarded_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id)]
-	guarded_dog[0]['temporary guardian'] = request.json['temporary guardian']
-	return jsonify({'You became a guardian': guarded_dog[0]})
+@app.route('/dogs/<parameter>', methods = ['PUT'])
+def become_guardian(parameter):
+	guarded_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
+		dog['breed'] == parameter || dog['name'] == parameter ||
+		dog['temporary guardian'] == parameter)]
+	if 'id' in request.json:
+		guarded_dog[0]['id'] = request.json['id']
+	if 'name' in request.json:
+		guarded_dog[0]['name'] = request.json['name']
+	if 'breed' in request.json:
+		guarded_dog[0]['bred'] = request.json['breed']
+	if 'temporary guardian' in request.json:
+		guarded_dog[0]['temporary guardian'] = request.json['temporary guardian']
+
+	return jsonify({'dog': guarded_dog[0]})
 
 
 if __name__ == "__main__":
