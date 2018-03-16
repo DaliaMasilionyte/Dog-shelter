@@ -60,10 +60,10 @@ def give_away_dog():
 	dogs_db.append(new_dog)
 
 	response = jsonify(new_dog)
-    response.status_code = 201
-    response.headers['location'] = '/dogs/{}'.format(request.json['id'])
-    response.autocorrect_location_header = False
-    return response
+	response.status_code = 201
+	response.headers['location'] = '/dogs/{}'.format(request.json['id'])
+	response.autocorrect_location_header = False
+	return response
 	
 
 # @app.route('/dogs/<parameter>', methods=['POST'])
