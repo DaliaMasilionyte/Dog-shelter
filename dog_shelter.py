@@ -21,7 +21,7 @@ def hello():
 # GET information about all dogs from database as JSON
 @app.route('/dogs', methods=['GET'])
 def get_all_dogs():
-	return jsonify({dogs_db})
+	return jsonify(dogs_db)
 
 # GET any dog by any parameter
 @app.route('/dogs/<parameter>', methods=['GET'])
@@ -31,7 +31,7 @@ def get_dog(parameter):
 		dog['temporary guardian'] == parameter)]
 	if len(my_dog) == 0:
 		abort(404)
-	return jsonify({my_dog[0]})
+	return jsonify(my_dog[0])
 
 
 
@@ -45,7 +45,7 @@ def adopt_dog(parameter):
 	if len(adopted_dog) == 0:
 		abort(404)
 	dogs_db.remove(adopted_dog[0])
-	return jsonify({adopted_dog[0]})
+	return jsonify(adopted_dog[0])
 
 # POST a dog to a database (give away)
 # Name is in url, id and breed have to be provided as JSON
@@ -58,7 +58,7 @@ def give_away_dog():
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
-	return jsonify({new_dog})
+	return jsonify(new_dog)
 
 # @app.route('/dogs/<parameter>', methods=['POST'])
 # def add_to_dog():
@@ -86,7 +86,7 @@ def become_guardian(parameter):
 	if 'temporary guardian' in request.json:
 		guarded_dog[0]['temporary guardian'] = request.json['temporary guardian']
 
-	return jsonify({guarded_dog[0]})
+	return jsonify(guarded_dog[0])
 
 
 if __name__ == "__main__":
