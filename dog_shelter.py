@@ -21,17 +21,17 @@ def hello():
 # GET information about all dogs from database as JSON
 @app.route('/dogs', methods=['GET'])
 def get_all_dogs():
-	return jsonify({'dogs':dogs_db})
+	return jsonify({dogs_db})
 
 # GET any dog by any parameter
 @app.route('/dogs/<parameter>', methods=['GET'])
-def get_dog(paramater):
-	my_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
-		dog['breed'] == parameter || dog['name'] == parameter ||
+def get_dog(parameter):
+	my_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
+		dog['breed'] == parameter or dog['name'] == parameter or
 		dog['temporary guardian'] == parameter)]
-	if len(adopted_dog) == 0:
+	if len(my_dog) == 0:
 		abort(404)
-	return jsonify({'dog:':my_dog[0]})
+	return jsonify({my_dog[0]})
 
 
 
@@ -39,13 +39,13 @@ def get_dog(paramater):
 # DELETE a dog from a database by ID (adopt)
 @app.route('/dogs/<parameter>', methods=['DELETE'])
 def adopt_dog(parameter):
-	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
-		dog['breed'] == parameter || dog['name'] == parameter ||
+	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
+		dog['breed'] == parameter or dog['name'] == parameter or
 		dog['temporary guardian'] == parameter)]
 	if len(adopted_dog) == 0:
 		abort(404)
 	dogs_db.remove(adopted_dog[0])
-	return jsonify({'dog:':adopted_dog[0]})
+	return jsonify({adopted_dog[0]})
 
 # POST a dog to a database (give away)
 # Name is in url, id and breed have to be provided as JSON
@@ -58,7 +58,7 @@ def give_away_dog():
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
-	return jsonify({'dog':new_dog})
+	return jsonify({new_dog})
 
 # @app.route('/dogs/<parameter>', methods=['POST'])
 # def add_to_dog():
@@ -74,8 +74,8 @@ def give_away_dog():
 # ID in URL, guardian name - provided as JSON
 @app.route('/dogs/<parameter>', methods = ['PUT'])
 def become_guardian(parameter):
-	guarded_dog = [ dog for dog in dogs_db if (dog['id'] == parameter || 
-		dog['breed'] == parameter || dog['name'] == parameter ||
+	guarded_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
+		dog['breed'] == parameter or dog['name'] == parameter or
 		dog['temporary guardian'] == parameter)]
 	if 'id' in request.json:
 		guarded_dog[0]['id'] = request.json['id']
@@ -86,7 +86,7 @@ def become_guardian(parameter):
 	if 'temporary guardian' in request.json:
 		guarded_dog[0]['temporary guardian'] = request.json['temporary guardian']
 
-	return jsonify({'dog': guarded_dog[0]})
+	return jsonify({guarded_dog[0]})
 
 
 if __name__ == "__main__":
