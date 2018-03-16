@@ -51,19 +51,14 @@ def adopt_dog(dog_id):
 def give_away_dog():
 	current_id = len(dogs_db) + 1
 	new_dog = {
-	'id' : current_id,
+	'id' : str(current_id),
 	'breed' : request.json['breed'],
 	'temporary guardian' : request.json['temporary guardian'],
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
 	
-
-	response = jsonify(new_dog)
-	response.status_code = 201
-	response.headers['location'] = '/dogs/{}'.format(request.json['id'])
-	response.autocorrect_location_header = False
-	return response
+	return jsonify(new_dog), 201
 	
 
 # @app.route('/dogs/<parameter>', methods=['POST'])
