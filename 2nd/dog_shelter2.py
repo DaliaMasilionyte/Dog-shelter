@@ -84,16 +84,16 @@ def change_dog(dog_id):
 
 #### Requests to another service
 
-@app.route('/dogs/<dog_id>/visits', methods = ['PUT'])
-def add_visit(dog_id):
-	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
-	if len(current_dog) == 0:
-		abort(404)
-	visit = requests.get('http://localhost:80/visits/schedules/{}'
-		.format(current_dog['temporary guardian ID'])
-	current_dog[visits].append(visit)
+# @app.route('/dogs/<dog_id>/visits', methods = ['PUT'])
+# def add_visit(dog_id):
+# 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+# 	if len(current_dog) == 0:
+# 		abort(404)
+# 	visit = requests.get('http://localhost:80/visits/schedules/{}'
+# 		.format(current_dog['temporary guardian ID'])
+# 	current_dog[visits].append(visit)
 	
-	return jsonify(current_dog[0])
+# 	return jsonify(current_dog[0])
 
 
 
