@@ -80,11 +80,11 @@ def change_dog(dog_id):
 
 @app.route('/visits', methods=['GET'])
 def get_all_visits():
-	r = request.get('http://localhost:81/visits/schedules/')
+	r = requests.get('http://localhost:81/visits/schedules')
 	return r.text
 
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0')
+	app.run(debug=True, host='0.0.0.0', threaded=True)
 
