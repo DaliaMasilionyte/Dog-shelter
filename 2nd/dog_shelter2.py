@@ -92,11 +92,12 @@ def change_dog(dog_id):
 # 	visit = requests.get('http://localhost:80/visits/schedules/{}'
 # 		.format(current_dog['temporary guardian ID'])
 # 	current_dog[visits].append(visit)
-	
+
 # 	return jsonify(current_dog[0])
 
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0', threaded=True)
+	# app.run(debug=True, host='0.0.0.0', threaded=True)
+	app.run(debug=True, host='0.0.0.0')
 
