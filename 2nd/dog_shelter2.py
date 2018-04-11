@@ -8,11 +8,16 @@ import os
 app = Flask(__name__)
 
 dogs_db = [
-	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian' : 'NONE'},
-	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian' : 'NONE'},
-	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian' : 'NONE'},
-	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian' : 'NONE'},
-	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian' : 'NONE'}
+	{'id' : '1', 'breed' : 'French bulldog', 
+	'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '2', 'breed' : 'Chow Chow', 
+	'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '3', 'breed' : 'Spaniel',
+	 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '4', 'breed' : 'French bulldog',
+	 'name' : 'Olive', 'temporary guardian ID' : '49608052145', 'visits' : []},
+	{'id' : '5', 'breed' : 'German Shepherd',
+	 'name' : 'Rex', 'temporary guardian ID' : 'NONE', 'visits' : []}
 ]
 
 @app.route('/')
@@ -52,8 +57,9 @@ def give_away_dog():
 	new_dog = {
 	'id' : str(current_id),
 	'breed' : request.json['breed'],
-	'temporary guardian' : request.json['temporary guardian'],
-	'name' : request.json['name']
+	'temporary guardian ID' : request.json['temporary guardian ID'],
+	'name' : request.json['name'],
+	'visits' : []
 	}
 	dogs_db.append(new_dog)
 	
@@ -71,12 +77,26 @@ def change_dog(dog_id):
 		changed_dog[0]['name'] = request.json['name']
 	if 'breed' in request.json:
 		changed_dog[0]['breed'] = request.json['breed']
-	if 'temporary guardian' in request.json:
-		changed_dog[0]['temporary guardian'] = request.json['temporary guardian']
+	if 'temporary guardian ID' in request.json:
+		changed_dog[0]['temporary guardian ID'] = request.json['temporary guardian ID']
 
 	return jsonify(changed_dog[0])
 
+#### Requests to another service
+
+@app.route('/dogs/<dog_id>/visits', methods = ['PUT'])
+def add_visit(dog_id):
+	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	if len(current_dog) == 0:
+		abort(404)
+	visit = requests.get('http://localhost:80/visits/schedules/{}'
+		.format(current_dog['temporary guardian ID'])
+	current_dog[visits].append(visit)
+	
+	return jsonify(current_dog[0])
+
+
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0')
+	app.run(debug=True, host='0.0.0.0', threaded=True)
 

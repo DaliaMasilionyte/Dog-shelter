@@ -8,11 +8,11 @@ import os
 app = Flask(__name__)
 
 dogs_db = [
-	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian' : 'NONE'},
-	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian' : 'NONE'},
-	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian' : 'NONE'},
-	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian' : 'NONE'},
-	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian' : 'NONE'}
+	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE'},
+	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE'},
+	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE'},
+	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : 'NONE'},
+	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : 'NONE'}
 ]
 
 @app.route('/')
@@ -29,7 +29,7 @@ def get_all_dogs():
 def get_dog(parameter):
 	my_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
 		dog['breed'] == parameter or dog['name'] == parameter or
-		dog['temporary guardian'] == parameter)]
+		dog['temporary guardian ID'] == parameter)]
 	if len(my_dog) == 0:
 		abort(404)
 	return jsonify(my_dog[0])
@@ -53,7 +53,7 @@ def give_away_dog():
 	new_dog = {
 	'id' : str(current_id),
 	'breed' : request.json['breed'],
-	'temporary guardian' : request.json['temporary guardian'],
+	'temporary guardian ID' : request.json['temporary guardian ID'],
 	'name' : request.json['name']
 	}
 	dogs_db.append(new_dog)
@@ -72,8 +72,8 @@ def change_dog(dog_id):
 		changed_dog[0]['name'] = request.json['name']
 	if 'breed' in request.json:
 		changed_dog[0]['breed'] = request.json['breed']
-	if 'temporary guardian' in request.json:
-		changed_dog[0]['temporary guardian'] = request.json['temporary guardian']
+	if 'temporary guardian ID' in request.json:
+		changed_dog[0]['temporary guardian ID'] = request.json['temporary guardian ID']
 
 	return jsonify(changed_dog[0])
 

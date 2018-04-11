@@ -1,0 +1,16 @@
+web:
+  build: .
+  command: python3 dog_shelter.py
+  ports:
+   - "5000:5000"
+  volumes:
+   - .:/code
+
+
+services:
+  build: ./Web_server-master
+  command: python3 app.py
+  ports:
+    - "80:5000"
+
+
