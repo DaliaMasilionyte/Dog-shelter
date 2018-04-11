@@ -8,16 +8,11 @@ import os
 app = Flask(__name__)
 
 dogs_db = [
-	{'id' : '1', 'breed' : 'French bulldog', 
-	'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '2', 'breed' : 'Chow Chow', 
-	'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '3', 'breed' : 'Spaniel',
-	 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '4', 'breed' : 'French bulldog',
-	 'name' : 'Olive', 'temporary guardian ID' : '49608052145', 'visits' : []},
-	{'id' : '5', 'breed' : 'German Shepherd',
-	 'name' : 'Rex', 'temporary guardian ID' : 'NONE', 'visits' : []}
+	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : '49608052145', 'visits' : []},
+	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : 'NONE', 'visits' : []}
 ]
 
 @app.route('/')
