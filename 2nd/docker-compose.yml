@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   web:
@@ -12,9 +12,9 @@ services:
 
   web2:
     build: ./Web_server-master
-    command: python3 ./Web_server-master/app.py
+    command: python ./Web_server-master/app.py
     ports:
-      - "80:5000"
+      - "81:5000"
     depends_on:
       - web
     volumes:
