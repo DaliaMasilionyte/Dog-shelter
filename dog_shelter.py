@@ -61,17 +61,6 @@ def give_away_dog():
 	return jsonify(new_dog), 201
 	
 
-# @app.route('/dogs/<parameter>', methods=['POST'])
-# def add_to_dog():
-# 	owned_dog = [ dog for dog in dogs_db if (dog['id'] == parameter or 
-# 		dog['breed'] == parameter or dog['name'] == parameter or
-# 		dog['temporary guardian'] == parameter)]
-	# if len(owned_dog) == 0:
-	# 	abort(404)
-	# 
-# 	return jsonify({'dog':changed_dog})
-
-
 # PUT change a dog
 # Any parameter in URL
 @app.route('/dogs/<dog_id>', methods = ['PUT'])
