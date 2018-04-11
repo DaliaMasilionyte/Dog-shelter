@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 from flask import abort
+import requests
 
 import os
 
@@ -76,6 +77,12 @@ def change_dog(dog_id):
 		changed_dog[0]['temporary guardian ID'] = request.json['temporary guardian ID']
 
 	return jsonify(changed_dog[0])
+
+@app.route('/visits', methods=['GET'])
+def get_all_visits():
+	r = request.get('http://localhost:81/visits/schedules/')
+	return r.text
+
 
 
 if __name__ == "__main__":
