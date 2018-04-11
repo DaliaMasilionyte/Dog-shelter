@@ -1,19 +1,22 @@
+services:
+  web:
+    build: .
+    command: python3 dog_shelter2.py
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
 
-web:
-  build: .
-  command: python3 dog_shelter2.py
-  ports:
-   - "5000:5000"
-  volumes:
-   - .:/code
 
+  web2:
+    build: ./Web_server-master
+    command: python3 ./Web_server-master/app.py
+    ports:
+      - "80:5000"
+    depends_on:
+      - web
+    volumes:
+     - .:/code
 
-webapp:
-  build: ./Web_server-master
-  command: python3 app.py
-  ports:
-    - "80:5000"
-  volumes:
-   - .:/Web_server-master/code
 
 
