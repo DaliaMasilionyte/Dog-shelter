@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: python3 dog_shelter2.py
+    command: python3 dog_shelter.py
     ports:
      - "5000:5000"
     volumes:
