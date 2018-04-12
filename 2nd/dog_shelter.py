@@ -81,6 +81,10 @@ def change_dog(dog_id):
 
 	return jsonify(changed_dog[0])
 
+
+#### Second task 
+
+# Get info about all visits
 @app.route('/visits', methods=['GET'])
 def get_all_visits():
 	r = requests.get('http://172.18.0.1:81/visits/schedules')
@@ -108,7 +112,6 @@ def add_visit(dog_id):
 	if len(current_dog) == 0:
 		abort(404)
 	url = 'http://172.18.0.1:81/visits/schedules'
-	header = {'content-type' : 'application/json'}
 	new_visit = {
 		'AK' : current_dog[0]['temporary guardian ID'],
 		'Name' : current_dog[0]['name'],
@@ -133,8 +136,6 @@ def delete_visit(dog_id, visit_id):
 			current_dog[0]['visits'].remove(current_dog[0]['visits'][index])
 			return jsonify(True), 200
 	return jsonify(False), 404
-
-
 
 
 if __name__ == "__main__":
