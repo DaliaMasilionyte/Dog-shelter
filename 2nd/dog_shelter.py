@@ -9,11 +9,11 @@ import os
 app = Flask(__name__)
 
 dogs_db = [
-	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE'},
-	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE'},
-	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE'},
-	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : 'NONE'},
-	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : 'NONE'}
+	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : '49608052145', 'visits' : []},
+	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : 'NONE', 'visits' : []}
 ]
 
 @app.route('/')
@@ -80,8 +80,20 @@ def change_dog(dog_id):
 
 @app.route('/visits', methods=['GET'])
 def get_all_visits():
-	r = requests.get('http://localhost:81/visits/schedules')
+	r = requests.get('http://172.18.0.1:81/visits/schedules')
 	return r.text
+
+# TODO:
+# Doesn't work
+# @app.route('/dogs/<dog_id>/visits', methods = ['PUT'])
+# def add_visit(dog_id):
+# 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+# 	if len(current_dog) == 0:
+# 		abort(404)
+# 	r = requests.get('http://172.18.0.1:81/visits/schedules/{}'
+# 		.format(current_dog['temporary guardian ID'])
+# 	current_dog['visits'].append(r.text)
+# 	return r.text
 
 
 
