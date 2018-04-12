@@ -1,0 +1,23 @@
+put
+curl -i -H "Content-type: application/json" -X PUT -d "{\"temporary guardian\":\"John Doe\"}" http://localhost:80/dogs/3
+
+
+
+delete (adopt)
+curl -i -X DELETE http://localhost:80/dogs/1
+
+get
+curl -i http://localhost:80/dogs
+
+post
+curl -i -X POST -H "Content-Type: application/json" -d '{ "id": "6", "breed": "Yorkshire Terriere"}' http://localhost:80/dogs/"Lily"
+
+
+
+PUT
+{"temporary guardian" : "John Doe"}
+
+POST
+{ "id": "6", "breed": "Yorkshire Terriere", "name": "Lily"}
+DELETE
+/1

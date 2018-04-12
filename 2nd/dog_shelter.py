@@ -3,9 +3,12 @@ from flask import request
 from flask import jsonify
 from flask import abort
 import requests
-
+import json
 import os
+import random
+from faker import Faker
 
+fake = Faker()
 app = Flask(__name__)
 
 dogs_db = [
@@ -83,17 +86,40 @@ def get_all_visits():
 	r = requests.get('http://172.18.0.1:81/visits/schedules')
 	return r.text
 
-# TODO:
-# Doesn't work
-# @app.route('/dogs/<dog_id>/visits', methods = ['PUT'])
+
+# @app.route('/dogs/<dog_id>/visits', methods = ['GET'])
 # def add_visit(dog_id):
 # 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 # 	if len(current_dog) == 0:
 # 		abort(404)
-# 	r = requests.get('http://172.18.0.1:81/visits/schedules/{}'
-# 		.format(current_dog['temporary guardian ID'])
-# 	current_dog['visits'].append(r.text)
+# 	# r = requests.get('http://172.18.0.1:81/visits/schedules/{}'.format(current_dog[0]['temporary guardian ID']))
+# 	r = requests.get('http://172.18.0.1:81/visits/schedules/Kristina')
+# 	current_dog[0]['visits'].append(r.text)
 # 	return r.text
+
+@app.route('/dogs/<dog_id>/visits', methods = ['POST'])
+def add_visit(dog_id):
+	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	if len(current_dog) == 0:
+		abort(404)
+	if request.method == 'POST':
+		url = 'http://172.18.0.1:81/visits/schedules'
+		header = {'content-type' : 'application/json'}
+		new_visit = {
+			'AK' : current_dog[0]['temporary guardian ID'],
+			'Name' : current_dog[0]['name'],
+			'Surname' : current_dog[0]['breed'],
+			'Date' : str(fake.date_between(start_date='today', end_date='+1y')),
+			'Time' : '{}:15'.format(random.randrange(8,20))
+		}
+		r = requests.post(url, json=new_visit)
+		current_dog[0]['visits'].append(new_visit)
+		return jsonify(current_dog[0])
+	# Else request is GET
+	# else:
+	# 	r = requests.get('http://172.18.0.1:81/visits/schedules/Kristina')
+	# 	current_dog[0]['visits'].append(r.text)
+	# 	return r.text
 
 
 

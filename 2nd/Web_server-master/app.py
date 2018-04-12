@@ -35,6 +35,8 @@ def delete_pat(patAK):
         abort(404)
     visits.remove(deleted_pat[0])
     return jsonify(True), 200
+
+
 @app.route('/visits/schedules', methods=['POST'])
 def new_appointment():
     if not request.json or not 'AK' in request.json:
@@ -54,6 +56,8 @@ def new_appointment():
         }
     visits.append(new_app)
     return jsonify(new_app),201,{'Location': '/visits/schedules/'+str(visits[-1]['ID'])}
+
+
 @app.route('/visits/schedules/<switchAK>',methods=['PUT'])
 def updateVisits(switchAK):
     up = [ upd for upd in visits if (upd['ID'] == switchAK)]
