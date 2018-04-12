@@ -95,7 +95,7 @@ def create_visit(dog_id):
 	url = 'http://172.18.0.1:81/visits/schedules'
 	r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
 	if r.status_code==200:
-		current_dog[0]['visits'].append(r.text)
+		current_dog[0]['visits'].append(r.json())
 		return jsonify(current_dog[0])
 	return r.text, 404
 
@@ -115,24 +115,23 @@ def add_visit(dog_id):
 		'Time' : '{}:15'.format(random.randrange(8,20))
 	}
 	r = requests.post(url, json=new_visit)
-	current_dog[0]['visits'].append(r.text)
-
+	current_dog[0]['visits'].append(r.json())
 	return jsonify(current_dog[0]), 201
 
 # Delete a visit
 @app.route('/dogs/<dog_id>/visits/<visit_id>', methods = ['DELETE'])
 def delete_visit(dog_id, visit_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
-	if len(current_dog) == 0 or len(current_dog[0]['visits']):
+	# if len(current_dog) == 0 or len(current_dog[0]['visits']):
+	if len(current_dog) == 0:
 		abort(404)
 	url = 'http://172.18.0.1:81/visits/schedules'
-	requests.delete('{}/{}'.format(url, visit_id))
-	# for visit in current_dog[0]['visits']:
-	# 	if visit['ID'] == visit_id:
-	# 		requests.delete('{}/{}'.format(url, visit_id))
-	# 		current_dog[0]['visits'].remove(visit)
-	return 200
-	# return 404
+	for index in range(len(current_dog[0]['visits'])):
+		if current_dog[0]['visits'][index]['ID'] == visit_id:
+			r = requests.delete('{}/{}'.format(url, visit_id))
+			current_dog[0]['visits'].remove(current_dog[0]['visits'][index])
+			return jsonify(True), 200
+	return jsonify(False), 404
 
 
 
