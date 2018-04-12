@@ -71,7 +71,8 @@ def updateVisits(switchAK):
 def getPatient(patieninf):
     pat = [ pak for pak in visits if (pak['ID'] == patieninf
             or pak['Name'] == patieninf or pak['Surname'] == patieninf
-            or pak ['Date'] == patieninf or pak['Time'] == patieninf)]
+            or pak ['Date'] == patieninf or pak['Time'] == patieninf 
+            or pak['AK'] == patieninf)]
     if len(pat) == 0:
         abort(404)
     return jsonify(pat)

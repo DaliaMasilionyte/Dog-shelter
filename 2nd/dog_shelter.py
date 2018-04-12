@@ -15,8 +15,8 @@ dogs_db = [
 	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
 	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
 	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : '49608052145', 'visits' : []},
-	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : 'NONE', 'visits' : []}
+	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : '49612033268', 'visits' : []},
+	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : '49608052145', 'visits' : []}
 ]
 
 @app.route('/')
@@ -86,40 +86,37 @@ def get_all_visits():
 	r = requests.get('http://172.18.0.1:81/visits/schedules')
 	return r.text
 
-
-# @app.route('/dogs/<dog_id>/visits', methods = ['GET'])
-# def add_visit(dog_id):
-# 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
-# 	if len(current_dog) == 0:
-# 		abort(404)
-# 	# r = requests.get('http://172.18.0.1:81/visits/schedules/{}'.format(current_dog[0]['temporary guardian ID']))
-# 	r = requests.get('http://172.18.0.1:81/visits/schedules/Kristina')
-# 	current_dog[0]['visits'].append(r.text)
-# 	return r.text
+# Get visits that belong to the dog by its guardian
+@app.route('/dogs/<dog_id>/visits', methods = ['GET'])
+def create_visit(dog_id):
+	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	if len(current_dog) == 0:
+		abort(404)
+	url = 'http://172.18.0.1:81/visits/schedules'
+	r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
+	if r.status_code==200:
+		current_dog[0]['visits'].append(r.text)
+		return jsonify(current_dog[0])
+	return r.text, 404
 
 @app.route('/dogs/<dog_id>/visits', methods = ['POST'])
 def add_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0:
 		abort(404)
-	if request.method == 'POST':
-		url = 'http://172.18.0.1:81/visits/schedules'
-		header = {'content-type' : 'application/json'}
-		new_visit = {
-			'AK' : current_dog[0]['temporary guardian ID'],
-			'Name' : current_dog[0]['name'],
-			'Surname' : current_dog[0]['breed'],
-			'Date' : str(fake.date_between(start_date='today', end_date='+1y')),
-			'Time' : '{}:15'.format(random.randrange(8,20))
-		}
-		r = requests.post(url, json=new_visit)
-		current_dog[0]['visits'].append(new_visit)
-		return jsonify(current_dog[0])
-	# Else request is GET
-	# else:
-	# 	r = requests.get('http://172.18.0.1:81/visits/schedules/Kristina')
-	# 	current_dog[0]['visits'].append(r.text)
-	# 	return r.text
+	url = 'http://172.18.0.1:81/visits/schedules'
+	header = {'content-type' : 'application/json'}
+	new_visit = {
+		'AK' : current_dog[0]['temporary guardian ID'],
+		'Name' : current_dog[0]['name'],
+		'Surname' : current_dog[0]['breed'],
+		'Date' : str(fake.date_between(start_date='today', end_date='+1y')),
+		'Time' : '{}:15'.format(random.randrange(8,20))
+	}
+	r = requests.post(url, json=new_visit)
+	current_dog[0]['visits'].append(new_visit)
+	return jsonify(current_dog[0]), 201
+
 
 
 
