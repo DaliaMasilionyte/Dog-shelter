@@ -12,11 +12,16 @@ fake = Faker()
 app = Flask(__name__)
 
 dogs_db = [
-	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 'temporary guardian ID' : 'NONE', 'visits' : []},
-	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 'temporary guardian ID' : '49612033268', 'visits' : []},
-	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 'temporary guardian ID' : '49608052145', 'visits' : []}
+	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 
+	'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 
+	'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 
+	'temporary guardian ID' : 'NONE', 'visits' : []},
+	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 
+	'temporary guardian ID' : '49612033268', 'visits' : []},
+	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 
+	'temporary guardian ID' : '49608052145', 'visits' : []}
 ]
 
 @app.route('/')
@@ -139,5 +144,5 @@ def delete_visit(dog_id, visit_id):
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0', threaded=True)
+	app.run(debug=True, host='0.0.0.0')
 
