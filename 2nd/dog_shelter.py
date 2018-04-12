@@ -99,6 +99,7 @@ def create_visit(dog_id):
 		return jsonify(current_dog[0])
 	return r.text, 404
 
+# Create a new visit
 @app.route('/dogs/<dog_id>/visits', methods = ['POST'])
 def add_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
@@ -114,8 +115,24 @@ def add_visit(dog_id):
 		'Time' : '{}:15'.format(random.randrange(8,20))
 	}
 	r = requests.post(url, json=new_visit)
-	current_dog[0]['visits'].append(new_visit)
+	current_dog[0]['visits'].append(r.text)
+
 	return jsonify(current_dog[0]), 201
+
+# Delete a visit
+@app.route('/dogs/<dog_id>/visits/<visit_id>', methods = ['DELETE'])
+def delete_visit(dog_id, visit_id):
+	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	if len(current_dog) == 0 or len(current_dog[0]['visits']):
+		abort(404)
+	url = 'http://172.18.0.1:81/visits/schedules'
+	requests.delete('{}/{}'.format(url, visit_id))
+	# for visit in current_dog[0]['visits']:
+	# 	if visit['ID'] == visit_id:
+	# 		requests.delete('{}/{}'.format(url, visit_id))
+	# 		current_dog[0]['visits'].remove(visit)
+	return 200
+	# return 404
 
 
 
