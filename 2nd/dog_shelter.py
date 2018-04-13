@@ -102,13 +102,12 @@ def create_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0:
 		abort(404)
-	# url = 'http://172.18.0.1:81/visits/schedules'
 	url = 'http://web2:81/visits/schedules'
 	r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
 	if r.status_code==200:
 		current_dog[0]['visits'] = []
 		for visit in r.json():
-			current_dog[0]['visits'].append(visit)
+			current_dog[0]['visits'].append(visit['ID'])
 		return jsonify(current_dog[0])
 	return r.text, 404
 
@@ -118,7 +117,6 @@ def add_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0:
 		abort(404)
-	# url = 'http://172.18.0.1:81/visits/schedules'
 	url = 'http://web2:81/visits/schedules'
 	new_visit = {
 		'AK' : current_dog[0]['temporary guardian ID'],
@@ -128,7 +126,7 @@ def add_visit(dog_id):
 		'Time' : '{}:15'.format(random.randrange(8,20))
 	}
 	r = requests.post(url, json=new_visit)
-	current_dog[0]['visits'].append(r.json())
+	current_dog[0]['visits'].append(r.json()['ID'])
 	return jsonify(current_dog[0]), 201
 
 # Delete a visit
@@ -137,10 +135,10 @@ def delete_visit(dog_id, visit_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0 or len(current_dog[0]['visits']) == 0:
 		abort(404)
-	# url = 'http://172.18.0.1:81/visits/schedules'
 	url = 'http://web2:81/visits/schedules'
 	for index in range(len(current_dog[0]['visits'])):
-		if current_dog[0]['visits'][index]['ID'] == visit_id:
+		# if current_dog[0]['visits'][index]['ID'] == visit_id:
+		if current_dog[0]['visits'][index] == visit_id:
 			r = requests.delete('{}/{}'.format(url, visit_id))
 			current_dog[0]['visits'].remove(current_dog[0]['visits'][index])
 			return jsonify(True), 200
