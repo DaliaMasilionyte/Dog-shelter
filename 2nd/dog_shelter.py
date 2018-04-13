@@ -101,7 +101,8 @@ def create_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0:
 		abort(404)
-	url = 'http://172.18.0.1:81/visits/schedules'
+	# url = 'http://172.18.0.1:81/visits/schedules'
+	url = 'http://web2:81/visits/schedules'
 	r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
 	if r.status_code==200:
 		current_dog[0]['visits'] = []
