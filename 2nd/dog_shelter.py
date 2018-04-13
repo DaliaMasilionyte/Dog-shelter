@@ -95,9 +95,10 @@ def get_all_visits():
 	url = 'http://web2:81/visits/schedules'
 	try:
 		r = requests.get(url)
+		return r.text
 	except requests.exceptions.RequestException as e:  
 		print(e)
-	return r.text
+		return str(e), 503
 
 # Get visits that belong to the dog by its guardian
 @app.route('/dogs/<dog_id>/visits', methods = ['GET'])
@@ -157,6 +158,8 @@ def delete_visit(dog_id, visit_id):
 				return jsonify(True), 200
 			except requests.exceptions.RequestException as e:
 				print(e)
+				return str(e), 503
+
 			
 	return jsonify(False), 404
 
