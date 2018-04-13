@@ -92,7 +92,8 @@ def change_dog(dog_id):
 # Get info about all visits
 @app.route('/visits', methods=['GET'])
 def get_all_visits():
-	r = requests.get('http://172.18.0.1:81/visits/schedules')
+	url = 'http://web2:81/visits/schedules'
+	r = requests.get(url)
 	return r.text
 
 # Get visits that belong to the dog by its guardian
@@ -117,7 +118,8 @@ def add_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0:
 		abort(404)
-	url = 'http://172.18.0.1:81/visits/schedules'
+	# url = 'http://172.18.0.1:81/visits/schedules'
+	url = 'http://web2:81/visits/schedules'
 	new_visit = {
 		'AK' : current_dog[0]['temporary guardian ID'],
 		'Name' : current_dog[0]['name'],
@@ -135,7 +137,8 @@ def delete_visit(dog_id, visit_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
 	if len(current_dog) == 0 or len(current_dog[0]['visits']) == 0:
 		abort(404)
-	url = 'http://172.18.0.1:81/visits/schedules'
+	# url = 'http://172.18.0.1:81/visits/schedules'
+	url = 'http://web2:81/visits/schedules'
 	for index in range(len(current_dog[0]['visits'])):
 		if current_dog[0]['visits'][index]['ID'] == visit_id:
 			r = requests.delete('{}/{}'.format(url, visit_id))
@@ -145,5 +148,5 @@ def delete_visit(dog_id, visit_id):
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0')
+	app.run(debug=True, host='0.0.0.0', port=5000)
 
