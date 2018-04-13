@@ -93,7 +93,10 @@ def change_dog(dog_id):
 @app.route('/visits', methods=['GET'])
 def get_all_visits():
 	url = 'http://web2:81/visits/schedules'
-	r = requests.get(url)
+	try:
+		r = requests.get(url)
+	except requests.exceptions.RequestException as e:  
+		print(e)
 	return r.text
 
 # Get visits that belong to the dog by its guardian
@@ -103,13 +106,17 @@ def create_visit(dog_id):
 	if len(current_dog) == 0:
 		abort(404)
 	url = 'http://web2:81/visits/schedules'
-	r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
-	if r.status_code==200:
-		current_dog[0]['visits'] = []
-		for visit in r.json():
-			current_dog[0]['visits'].append(visit['ID'])
-		return jsonify(current_dog[0])
-	return r.text, 404
+	try:
+		r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
+		if r.status_code==200:
+			current_dog[0]['visits'] = []
+			for visit in r.json():
+				current_dog[0]['visits'].append(visit['ID'])
+			return jsonify(current_dog[0])
+	except requests.RequestException as e:
+		print(e)
+		return str(e), 503
+	return jsonify(r.status_code), 404
 
 # Create a new visit
 @app.route('/dogs/<dog_id>/visits', methods = ['POST'])
@@ -125,9 +132,14 @@ def add_visit(dog_id):
 		'Date' : str(fake.date_between(start_date='today', end_date='+1y')),
 		'Time' : '{}:15'.format(random.randrange(8,20))
 	}
-	r = requests.post(url, json=new_visit)
-	current_dog[0]['visits'].append(r.json()['ID'])
-	return jsonify(current_dog[0]), 201
+	try:
+		r = requests.post(url, json=new_visit)
+		current_dog[0]['visits'].append(r.json()['ID'])
+		return jsonify(current_dog[0]), 201
+	except requests.exceptions.RequestException as e:
+		print(e)
+		return str(e), 503
+	
 
 # Delete a visit
 @app.route('/dogs/<dog_id>/visits/<visit_id>', methods = ['DELETE'])
@@ -139,9 +151,13 @@ def delete_visit(dog_id, visit_id):
 	for index in range(len(current_dog[0]['visits'])):
 		# if current_dog[0]['visits'][index]['ID'] == visit_id:
 		if current_dog[0]['visits'][index] == visit_id:
-			r = requests.delete('{}/{}'.format(url, visit_id))
-			current_dog[0]['visits'].remove(current_dog[0]['visits'][index])
-			return jsonify(True), 200
+			try:
+				r = requests.delete('{}/{}'.format(url, visit_id))
+				current_dog[0]['visits'].remove(current_dog[0]['visits'][index])
+				return jsonify(True), 200
+			except requests.exceptions.RequestException as e:
+				print(e)
+			
 	return jsonify(False), 404
 
 
