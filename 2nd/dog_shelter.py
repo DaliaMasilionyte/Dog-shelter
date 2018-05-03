@@ -48,11 +48,19 @@ def get_dog(parameter):
 # DELETE a dog from a database by ID (adopt)
 @app.route('/dogs/<dog_id>', methods=['DELETE'])
 def adopt_dog(dog_id):
-	adopted_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
-	if len(adopted_dog) == 0:
+	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	if len(current_dog) == 0:
 		abort(404)
-	dogs_db.remove(adopted_dog[0])
-	return jsonify(adopted_dog[0]), 200
+	url = 'http://web2:81/visits/schedules'
+	for visit_id in current_dog[0]['visits']:
+		try:
+			r = requests.delete('{}/{}'.format(url, visit_id))
+		except requests.exceptions.RequestException as e:
+			print(e)
+			return str(e), 503
+	dogs_db.remove(current_dog[0])
+	return jsonify(True), 200	
+
 
 # POST a dog to a database (give away)
 # Name is in url, id and breed have to be provided as JSON
@@ -119,6 +127,9 @@ def create_visit(dog_id):
 		return str(e), 503
 	return jsonify(r.status_code), 404
 
+# TODO:
+	# dogs/4/visits?embedded=visit gauti visa irasa pagal identifikatorius is kito web serviso
+
 # Create a new visit
 @app.route('/dogs/<dog_id>/visits', methods = ['POST'])
 def add_visit(dog_id):
@@ -158,9 +169,7 @@ def delete_visit(dog_id, visit_id):
 				return jsonify(True), 200
 			except requests.exceptions.RequestException as e:
 				print(e)
-				return str(e), 503
-
-			
+				return str(e), 503	
 	return jsonify(False), 404
 
 
