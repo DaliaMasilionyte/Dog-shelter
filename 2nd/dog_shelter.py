@@ -5,6 +5,7 @@ from flask import abort
 import requests
 import json
 import os
+import copy
 import random
 from faker import Faker
 
@@ -45,7 +46,8 @@ def get_dog(parameter):
 
 
 
-# DELETE a dog from a database by ID (adopt)
+# DELETE a dog from a database by ID 
+# and all its visits from visit service db (adopt)
 @app.route('/dogs/<dog_id>', methods=['DELETE'])
 def adopt_dog(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
@@ -116,19 +118,31 @@ def create_visit(dog_id):
 		abort(404)
 	url = 'http://web2:81/visits/schedules'
 	try:
-		r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
-		if r.status_code==200:
-			current_dog[0]['visits'] = []
-			for visit in r.json():
-				current_dog[0]['visits'].append(visit['ID'])
-			return jsonify(current_dog[0])
+		if(request.args.get('embedded', '') == "visit"):
+			embeddedVisits = []
+			for visit in current_dog[0]['visits']:
+				r = requests.get('{}/{}'.format(url, visit))
+				r = json.loads(r.text)
+				embeddedVisits.append(r)
+			return jsonify(embeddedVisits)
+		else:
+			# for visit in current_dog[0]['visits']:
+			# 	if( request.args.get('embedded', '') == visit):
+			# 		r = requests.get('{}/{}'.format(url, visit))
+			# 		r = json.loads(r.text)
+			# 		return jsonify(r)
+			# 	else:
+			r = requests.get('{}/{}'.format(url, current_dog[0]['temporary guardian ID']))
+			if r.status_code==200:
+				current_dog[0]['visits'] = []
+				for visit in r.json():
+					current_dog[0]['visits'].append(visit['ID'])
+				return jsonify(current_dog[0])
 	except requests.RequestException as e:
 		print(e)
 		return str(e), 503
-	return jsonify(r.status_code), 404
+	return jsonify(404)
 
-# TODO:
-	# dogs/4/visits?embedded=visit gauti visa irasa pagal identifikatorius is kito web serviso
 
 # Create a new visit
 @app.route('/dogs/<dog_id>/visits', methods = ['POST'])
@@ -153,7 +167,7 @@ def add_visit(dog_id):
 		return str(e), 503
 	
 
-# Delete a visit
+# Delete a single visit
 @app.route('/dogs/<dog_id>/visits/<visit_id>', methods = ['DELETE'])
 def delete_visit(dog_id, visit_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
@@ -161,7 +175,6 @@ def delete_visit(dog_id, visit_id):
 		abort(404)
 	url = 'http://web2:81/visits/schedules'
 	for index in range(len(current_dog[0]['visits'])):
-		# if current_dog[0]['visits'][index]['ID'] == visit_id:
 		if current_dog[0]['visits'][index] == visit_id:
 			try:
 				r = requests.delete('{}/{}'.format(url, visit_id))
