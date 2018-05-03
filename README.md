@@ -19,7 +19,7 @@ Port 5000 is used.
 ```
 curl -i http://localhost:5000/dogs
 ```  
-2. DELETE (adopt) a dog from existing dogs_db (<dog_id> is the id of a dog from the database):
+2. DELETE (adopt) a dog from existing dogs_db (<dog_id> is the id of a dog from the database) (this also deletes all its visits):
 ```
 curl -i -X DELETE http://localhost:5000/dogs/<dog_id>
 ```  
@@ -67,10 +67,18 @@ curl -i http://localhost:5000/dogs/<dog_id>/visits
 ```
 curl -i -X POST http://localhost:5000/dogs/<dog_id>/visits
 ```
-4. DELETE an exisiting visit from the visit service and from the dogs' list of visits by the visit ID
+4. Get full visits descriptions that belong to the dog by using "embedded" parameter
+```
+curl -i -X http://localhost:5000/dogs/<dog_id>/visits?embedded=visit
+``` 
+5. DELETE an exisiting visit from the visit service and from the dogs' list of visits by the visit ID
 ```
 curl -i -X DELETE http://localhost:5000/dogs/<dog_id>/visits/<visit_id>
 ```  
+6. DELETE a dog. That deletes also all the visits, that belong to the dog from the visit web service
+```
+curl -i -X DELETE http://localhost:5000/dogs/<dog_id>
+``` 
 
 ### Query examples
 
@@ -86,5 +94,15 @@ curl -i -X POST http://localhost:5000/dogs/4/visits
 
 4.
 ```
+curl -i -X http://localhost:5000/dogs/4/visits?embedded=visit
+``` 
+
+5.
+```
 curl -i -X DELETE http://localhost:5000/dogs/4/visits/1
+```  
+
+6. 
+```
+curl -i -X DELETE http://localhost:5000/dogs/4
 ```  
