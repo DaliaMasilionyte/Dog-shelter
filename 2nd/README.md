@@ -25,7 +25,7 @@ curl -i -X POST http://localhost:5000/dogs/<dog_id>/visits
 ```
 4. Get full visits descriptions that belong to the dog by using "embedded" parameter
 ```
-curl -i -X http://localhost:5000/dogs/<dog_id>/visits?embedded=visit
+curl -i http://localhost:5000/dogs/<dog_id>/visits?embedded=visit
 ``` 
 5. DELETE an exisiting visit from the visit service and from the dogs' list of visits by the visit ID
 ```
@@ -50,7 +50,7 @@ curl -i -X POST http://localhost:5000/dogs/4/visits
 
 4.
 ```
-curl -i -X http://localhost:5000/dogs/4/visits?embedded=visit
+curl -i http://localhost:5000/dogs/4/visits?embedded=visit
 ``` 
 
 5.
