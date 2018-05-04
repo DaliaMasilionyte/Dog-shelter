@@ -32,7 +32,20 @@ def hello():
 # GET information about all dogs from database as JSON
 @app.route('/dogs', methods=['GET'])
 def get_all_dogs():
-	return jsonify(dogs_db)
+	if(request.args.get('embedded', '') == "visit"):
+		url = 'http://web2:81/visits/schedules'
+		dogsCopied = copy.deepcopy(dogs_db)
+		for i in range(len(dogs_db)):
+			embeddedVisits = []
+			for visit in dogsCopied[i]['visits']:
+				r = requests.get('{}/{}'.format(url, visit))
+				r = json.loads(r.text)
+				embeddedVisits.append(r)
+			dogsCopied[i]['visits'] = []
+			dogsCopied[i]['visits'].append(embeddedVisits)
+		return jsonify(dogsCopied)
+	else:
+		return jsonify(dogs_db)
 
 # GET any dog by any parameter
 @app.route('/dogs/<parameter>', methods=['GET'])
