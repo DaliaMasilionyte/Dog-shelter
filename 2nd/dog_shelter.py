@@ -47,8 +47,8 @@ def get_all_dogs():
 				dogsCopied[i]['visits'].append(embeddedVisits)
 			return jsonify(dogsCopied)
 		except requests.exceptions.RequestException as e:
-			print(e)
-			return str(e), 503
+			dogsCopied[i]['visits'] = []
+			return jsonify(dogsCopied)
 	else:
 		return jsonify(dogs_db)
 
@@ -162,8 +162,8 @@ def create_visit(dog_id):
 					current_dog[0]['visits'].append(visit['ID'])
 				return jsonify(current_dog[0])
 	except requests.RequestException as e:
-		print(e)
-		return str(e), 503
+		current_dog[0]['visits'] = []
+		return jsonify(current_dog[0])
 	return jsonify(404)
 
 
