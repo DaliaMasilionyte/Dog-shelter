@@ -76,7 +76,8 @@ def adopt_dog(dog_id):
 		try:
 			r = requests.delete('{}/{}'.format(url, visit_id))
 		except requests.exceptions.RequestException as e:
-			print(e)
+			dogs_db.remove(current_dog[0])
+		
 			return str(e), 503
 	dogs_db.remove(current_dog[0])
 	return jsonify(True), 200	
