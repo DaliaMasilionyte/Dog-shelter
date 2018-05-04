@@ -20,10 +20,11 @@ dogs_db = [
 	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 
 	'temporary guardian ID' : '55331', 'visits' : []},
 	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 
-	'temporary guardian ID' : '49612033268', 'visits' : []},
+	'temporary guardian ID' : '49612033268', 'visits' : ['1']},
 	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 
-	'temporary guardian ID' : '49608052145', 'visits' : []}
+	'temporary guardian ID' : '49608052145', 'visits' : ['2']}
 ]
+
 
 @app.route('/')
 def hello():
