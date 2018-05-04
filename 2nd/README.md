@@ -23,7 +23,7 @@ curl -i http://localhost:5000/dogs/<dog_id>/visits
 ```
 curl -i -X POST http://localhost:5000/dogs/<dog_id>/visits
 ```
-4. Get full visits descriptions that belong to the dog by using "embedded" parameter
+4. GET full visits descriptions that belong to the dog by using "embedded" parameter
 ```
 curl -i http://localhost:5000/dogs/<dog_id>/visits?embedded=visit
 ``` 
@@ -34,6 +34,11 @@ curl -i -X DELETE http://localhost:5000/dogs/<dog_id>/visits/<visit_id>
 6. DELETE a dog. That deletes also all the visits, that belong to the dog from the visit web service
 ```
 curl -i -X DELETE http://localhost:5000/dogs/<dog_id>
+``` 
+
+7. GET embedded info about all dogs
+```
+curl -i http://localhost:5000/dogs?embedded=visit
 ``` 
 
 ### Query examples
@@ -62,3 +67,8 @@ curl -i -X DELETE http://localhost:5000/dogs/4/visits/1
 ```
 curl -i -X DELETE http://localhost:5000/dogs/4
 ```  
+
+7. 
+```
+curl -i http://localhost:5000/dogs?embedded=visit
+``` 

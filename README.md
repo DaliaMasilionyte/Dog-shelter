@@ -41,6 +41,11 @@ curl -i -X DELETE http://localhost:5000/dogs/<dog_id>/visits/<visit_id>
 curl -i -X DELETE http://localhost:5000/dogs/<dog_id>
 ``` 
 
+7. GET embedded info about all dogs
+```
+curl -i http://localhost:5000/dogs?embedded=visit
+``` 
+
 ### Query examples
 
 1.
@@ -73,6 +78,10 @@ curl -i -X DELETE http://localhost:5000/dogs/4/visits/1
 curl -i -X DELETE http://localhost:5000/dogs/4
 ```  
 
+7. 
+```
+curl -i http://localhost:5000/dogs?embedded=visit
+``` 
 
 
 ## FIRST task
