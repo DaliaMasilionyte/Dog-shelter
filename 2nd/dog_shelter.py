@@ -5,6 +5,7 @@ from flask import abort
 import requests
 import json
 import os
+import copy
 import random
 from faker import Faker
 
@@ -113,17 +114,22 @@ def get_all_visits():
 @app.route('/dogs/<dog_id>/visits', methods = ['GET'])
 def create_visit(dog_id):
 	current_dog = [ dog for dog in dogs_db if (dog['id'] == dog_id )]
+	
 	if len(current_dog) == 0:
 		abort(404)
+	
 	url = 'http://web2:81/visits/schedules'
 	try:
 		if(request.args.get('embedded', '') == "visit"):
+			copy_dog = copy.deepcopy(current_dog)
 			embeddedVisits = []
-			for visit in current_dog[0]['visits']:
+			for visit in copy_dog[0]['visits']:
 				r = requests.get('{}/{}'.format(url, visit))
 				r = json.loads(r.text)
 				embeddedVisits.append(r)
-			return jsonify(embeddedVisits)
+			copy_dog[0]['visits'] = []
+			copy_dog[0]['visits'].append(embeddedVisits)
+			return jsonify(copy_dog)
 		else:
 			# for visit in current_dog[0]['visits']:
 			# 	if( request.args.get('embedded', '') == visit):
