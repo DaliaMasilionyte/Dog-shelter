@@ -5,7 +5,6 @@ from flask import abort
 import requests
 import json
 import os
-import copy
 import random
 from faker import Faker
 
