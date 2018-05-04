@@ -14,11 +14,11 @@ app = Flask(__name__)
 
 dogs_db = [
 	{'id' : '1', 'breed' : 'French bulldog', 'name' : 'Doggo', 
-	'temporary guardian ID' : 'NONE', 'visits' : []},
+	'temporary guardian ID' : '12244', 'visits' : []},
 	{'id' : '2', 'breed' : 'Chow Chow', 'name' : 'Sir Pup', 
-	'temporary guardian ID' : 'NONE', 'visits' : []},
+	'temporary guardian ID' : '2356', 'visits' : []},
 	{'id' : '3', 'breed' : 'Spaniel', 'name' : 'Coco', 
-	'temporary guardian ID' : 'NONE', 'visits' : []},
+	'temporary guardian ID' : '55331', 'visits' : []},
 	{'id' : '4', 'breed' : 'French bulldog', 'name' : 'Olive', 
 	'temporary guardian ID' : '49612033268', 'visits' : []},
 	{'id' : '5', 'breed' : 'German Shepherd', 'name' : 'Rex', 
