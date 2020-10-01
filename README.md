@@ -7,11 +7,11 @@ Web service using python flask
 You need to have docker and docker-compose installed  
 To build and run:
 
-cd 2nd  
+`cd 2nd`  
 
-docker-compose build  
+`docker-compose build`  
 
-docker-compose up -d  
+`docker-compose up -d`
   
 Ports 5000 and 81 are used for the services.  
 
